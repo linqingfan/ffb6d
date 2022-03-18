@@ -11,7 +11,7 @@ h5py
 numpy
 #torch==1.4.0
 #torchvision==0.2.0
-pyyaml==5.4.1
+PyYAML==5.4.1
 #pprint
 enum34
 future
