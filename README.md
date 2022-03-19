@@ -129,4 +129,42 @@ python3 -m torch.distributed.launch --nproc_per_node=$n_gpu train_lm.py --gpus=$
 To debug on vscode, set the launch.json as follows:
 
 ```
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "console": "integratedTerminal",
+            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"],
+            "justMyCode": true
+        }
+    ]
+}
+```
+or
+```
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/kplim/miniconda3/envs/ffb6d/lib/python3.7/site-packages/torch/distributed/launch.py",
+            "cwd" : "path to script"
+            "console": "integratedTerminal",
+            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"],
+            "justMyCode": true
+        }
+    ]
+}
 ```
