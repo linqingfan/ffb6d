@@ -141,8 +141,7 @@ To debug on vscode, set the launch.json as follows:
             "request": "launch",
             "module": "torch.distributed.launch",
             "console": "integratedTerminal",
-            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"],
-            "justMyCode": true
+            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"]
         }
     ]
 }
@@ -162,8 +161,7 @@ or
             "program": "/home/kplim/miniconda3/envs/ffb6d/lib/python3.7/site-packages/torch/distributed/launch.py",
             "cwd" : "path to script"
             "console": "integratedTerminal",
-            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"],
-            "justMyCode": true
+            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"]
         }
     ]
 }
