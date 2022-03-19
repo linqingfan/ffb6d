@@ -48,6 +48,7 @@ tensorboardx
 pandas
 sklearn
 termcolor
+tk
 ```
 
 ```
