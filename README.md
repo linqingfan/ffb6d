@@ -75,7 +75,7 @@ make install
 git clone https://github.com/NVIDIA/apex
 cd apex
 export TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6"
-pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" ./
+python setup.py install --cuda_ext --cpp_ext
 cd ..
 
 ```
