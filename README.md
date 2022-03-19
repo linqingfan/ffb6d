@@ -1,6 +1,6 @@
-# Installing ffb6d in Cuda 11.0
+# Installing ffb6d in Cuda 11.3
 
-Uninstalling nvidia drivers:
+If cuda 11.3 is not installed yet, uninstal nvidia drivers first:
 ```
 sudo apt purge -y 'nvidia-*'
 
