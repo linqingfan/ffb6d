@@ -161,7 +161,7 @@ or
             "program": "/home/kplim/miniconda3/envs/ffb6d/lib/python3.7/site-packages/torch/distributed/launch.py",
             "cwd" : "path to script"
             "console": "integratedTerminal",
-            "args": ["--nproc_per_node=2", "train_lm.py", "--gpus=2", "--cls=ape"]
+            "args": ["--nproc_per_node=4", "train_lm.py", "--gpus=4", "--cls=ape"]
         }
     ]
 }
