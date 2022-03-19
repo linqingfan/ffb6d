@@ -49,6 +49,7 @@ pandas
 sklearn
 termcolor
 tk
+tqdm
 ```
 
 ```
@@ -92,4 +93,40 @@ replace line 418 in the file ffb6d/train_lm.py (writer.add_scalars('val_acc', ac
 ```
           for i,val in enumerate(acc_dict):
                 writer.add_scalar(tag='Checking range', scalar_value=acc_dict[val][i], global_step=i)
+```
+The raster triangle codes has been downloaded to /home/datasets/raster_triangle. Compile the rastertriangle_so.sh by modifying the correct library and include directory
+
+Generate the  rendered and fused data by:
+E.g for 'ape'
+```
+python3 rgbd_renderer.py --cls ape --render_num 70000
+python3 fuse.py --cls ape --fuse_num 10000
+```
+Note there are following objects to generate and train:
+```
+    'ape': 1,
+    'benchvise': 2,
+    'cam': 4,
+    'can': 5,
+    'cat': 6,
+    'driller': 8,
+    'duck': 9,
+    'eggbox': 10,
+    'glue': 11,
+    'holepuncher': 12,
+    'iron': 13,
+    'lamp': 14,
+    'phone': 15,
+```
+Finally, training using the following commands:
+
+```
+cd ffb6d
+n_gpu=4
+cls='ape'
+python3 -m torch.distributed.launch --nproc_per_node=$n_gpu train_lm.py --gpus=$n_gpu --cls=$cls
+```
+To debug on vscode, set the launch.json as follows:
+
+```
 ```
