@@ -87,7 +87,9 @@ cd normalSpeed/normalSpeed
 python3 setup.py install --user
 cd ..
 ```
+replace line 418 in the file ffb6d/train_lm.py (writer.add_scalars('val_acc', acc_dict, it)) with:
+
 ```
-for i,val in enumerate(acc_dict):
+          for i,val in enumerate(acc_dict):
                 writer.add_scalar(tag='Checking range', scalar_value=acc_dict[val][i], global_step=i)
 ```
