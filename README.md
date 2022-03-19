@@ -14,7 +14,7 @@ git clone https://github.com/ethnhe/FFB6D
 cd FFB6D
 conda create -n ffb6d python=3.7
 conda activate ffb6d
-pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+pip3 install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
 Create a file requirement_new.txt with the following content:
 ```
