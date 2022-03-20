@@ -105,7 +105,11 @@ cd normalSpeed/normalSpeed
 python3 setup.py install --user
 cd ..
 ```
-
+## Compile RandLA-Net operators:
+```
+cd ffb6d/models/RandLA/
+sh compile_op.sh
+```
 ## FFB6D codes update
 The original codes cant run after the first epouch because of tensorboardx problem.
 Please replace line 418 in the file ffb6d/train_lm.py (writer.add_scalars('val_acc', acc_dict, it)) with:
