@@ -1,14 +1,14 @@
 # Installing ffb6d in Cuda 11.3
 The original FFB6D codes were built on Cuda 10.x and opencv 3.x. System with more recent RTX cards can only run with Cuda 11.x
 
-Cuda 10.2: Support Compute capability <= 7.5
-Cuda 11.0: Support Compute capability <= 8.0
-Cuda 11.3: Support Compute capability <= 8.6
+Cuda 10.2: Support Compute capability <= 7.5 <br/>
+Cuda 11.0: Support Compute capability <= 8.0 <br/>
+Cuda 11.3: Support Compute capability <= 8.6 <br/>
 
-GPU cards compute capability:
-RTX 3090, 3080, 3070: Compute capability 8.6
-RTX 2080 Ti: Compute capability 7.5
-GTX 1080 Ti: Conpute capability 6.1
+GPU cards compute capability: <br/>
+RTX 3090, 3080, 3070: Compute capability 8.6 <br/>
+RTX 2080 Ti: Compute capability 7.5 <br/>
+GTX 1080 Ti: Conpute capability 6.1 <br/>
 
 Our new server is already installed with Cuda 11.3 but this is to record the step to install cuda 11.3 on the system.
 You can skip these instructions for installing cuda 11.3 for the system
