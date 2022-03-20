@@ -1,4 +1,4 @@
-# Installing ffb6d in Cuda 11.3
+# Installing FFB6D in Cuda 11.3
 The original FFB6D codes were built on Cuda 10.x and opencv 3.x. System with more recent RTX cards can only run with Cuda 11.x
 
 Cuda 10.2: Support Compute capability <= 7.5 <br/>
