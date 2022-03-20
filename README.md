@@ -70,7 +70,9 @@ tqdm
 ```
 pip install -r requirement_new.txt
 ```
-
+## Installing Opencv 3.x
+OpenCV need to be compilted as this is required latter when other packages require compiling with the opencv header. <br/>
+The "make install" will install the headers and libraries to the conda system and also the python cv2 package 
 ```
 wget https://github.com/opencv/opencv/archive/3.4.16.zip
 unzip 3.4.16.zip
@@ -86,7 +88,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -D PYTHO
 make -j8
 make install
 ```
-
+## Install apex
 ```
 git clone https://github.com/NVIDIA/apex
 cd apex
@@ -95,20 +97,27 @@ python setup.py install --cuda_ext --cpp_ext
 cd ..
 
 ```
-
-Install normalSpeed, a fast and light-weight normal map estimator:
+## Install normal speed
+Install normalSpeed, a fast and light-weight normal map estimator. This will require opencv headers:
 ```
 git clone https://github.com/hfutcgncas/normalSpeed.git
 cd normalSpeed/normalSpeed
 python3 setup.py install --user
 cd ..
 ```
-replace line 418 in the file ffb6d/train_lm.py (writer.add_scalars('val_acc', acc_dict, it)) with:
+
+## FFB6D codes update
+The original codes cant run after the first epouch because of tensorboardx problem.
+Please replace line 418 in the file ffb6d/train_lm.py (writer.add_scalars('val_acc', acc_dict, it)) with:
 
 ```
           for i,val in enumerate(acc_dict):
                 writer.add_scalar(tag='Checking range', scalar_value=acc_dict[val][i], global_step=i)
 ```
+
+## Training with LineMod
+
+### Generate rendered and Fused data for LineMod datasets
 The raster triangle codes has been downloaded to /home/datasets/raster_triangle. Compile the rastertriangle_so.sh by modifying the correct library and include directory
 
 Generate the  rendered and fused data by:
@@ -141,6 +150,8 @@ n_gpu=4
 cls='ape'
 python3 -m torch.distributed.launch --nproc_per_node=$n_gpu train_lm.py --gpus=$n_gpu --cls=$cls
 ```
+## Vscode debugging
+
 To debug on vscode, set the launch.json as follows:
 
 ```
