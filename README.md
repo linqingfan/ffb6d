@@ -154,6 +154,7 @@ n_gpu=4
 cls='ape'
 python3 -m torch.distributed.launch --nproc_per_node=$n_gpu train_lm.py --gpus=$n_gpu --cls=$cls
 ```
+Make sure there is no warning that apex is not compiled with --cuda_ext option, otherwise pip uninstall apex and compile apex again
 ## Vscode debugging
 
 To debug on vscode, set the launch.json as follows:
