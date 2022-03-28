@@ -199,7 +199,7 @@ or
 ```
 # Codes Run Through
 
-## Input Variables
+## Inputs to train model
 
 ```
 dpt_map_m=dpt_m : [480,640] depth map (already divided by scale of 1000, i.e. in mm)
@@ -269,8 +269,8 @@ p2r_ds_nei_idx0: contain index of 1 nearest neighbour of each point on sr2dptxyz
 p2r_ds_nei_idx1: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz1//4)
 p2r_ds_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz2//4)
 p2r_ds_nei_idx3: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz3//4)
+```
 
-index of ```  
 index of Bottoindex of m to Top (3 layers):
 ```
 r2p_up_nei_idx0: contain 16 indices of the neighbour of each point on cld_xyz3. neighbours are from sr2dptxyz[4]
