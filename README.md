@@ -212,10 +212,11 @@ ctr_targ_ofst: the pointcloud of the object center as zero coordinate  and maski
 ```
 
 ```
-xyz_lst: [0]-> [3,480,640]
-[1]-> [3,240,320]
-[2]-> [3,120,160]
-[3]-> [3,60,80]
+xyz_lst is a list of pointclouds in the scene. Each higher index is the down-sampled version of original
+xyz_lst[0]-> [3,480,640]
+xyz_lst[1]-> [3,240,320]
+xyz_lst[2]-> [3,120,160]
+xyz_lst[3]-> [3,60,80]
 
 sr2dptxyz is a tuple and is linearised version of xyz_lst:
 sr2dptxyz[1] : linear array of size [480*460 , 3]
