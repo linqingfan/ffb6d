@@ -197,3 +197,16 @@ or
     ]
 }
 ```
+# Codes Run Through
+
+## Input Variables
+
+```
+RTs : only [0], pose (R*T) of object e.g. 'APE' 
+kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
+ctr3ds : the pose of the centre of the 3d object mulitplied by RT i.e. the 3d location (XYZ) of the centre of the object at the scene
+cls_ids : class id
+kp_targ_ofst: the 8 pointcloud of the object centered at each keypoint (each keypoint is zero coordinate). 
+              #Computed by minusing pointcloud of scene with each kp3ds
+ctr_targ_ofst: the pointcloud of the object center as zero coordinate
+```
