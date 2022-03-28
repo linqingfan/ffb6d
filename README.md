@@ -271,7 +271,7 @@ p2r_ds_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz
 p2r_ds_nei_idx3: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz3//4)
 ```
 
-index of Bottoindex of m to Top (3 layers):
+Bottom to Top (3 layers):
 ```
 r2p_up_nei_idx0: contain 16 indices of the neighbour of each point on cld_xyz3. neighbours are from sr2dptxyz[4]
 r2p_up_nei_idx1: contain 16 indices of the neighbour of each point on cld_xyz2. neighbours are from sr2dptxyz[2]
