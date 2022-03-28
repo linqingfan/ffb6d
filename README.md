@@ -231,6 +231,7 @@ labels=labels_pt:  [n_sample_points] The mask of the object
 choose: [n_sample_points] Index of chosen points
 cld_rgb_nrm : [9, n_sample_points] concatenate cld,rgb,nrm at each point 
 ```
+```
 RTs : only [0], pose (R*T) of object e.g. 'APE' 
 kp_3ds=kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
 ctr_3ds=ctr3ds : the pose of the centre of the 3d object mulitplied by RT i.e. the 3d location (XYZ) of the centre of the object at the scene
