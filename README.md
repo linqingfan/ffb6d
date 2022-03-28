@@ -202,17 +202,14 @@ or
 ## Input Variables
 
 ```
-RTs : only [0], pose (R*T) of object e.g. 'APE' 
-kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
-ctr3ds : the pose of the centre of the 3d object mulitplied by RT i.e. the 3d location (XYZ) of the centre of the object at the scene
-cls_ids : class id
-kp_targ_ofst: the 8 pointcloud of the object centered at each keypoint (each keypoint is zero coordinate). 
-              #Computed by minusing pointcloud of scene with each kp3ds and masking background out
-ctr_targ_ofst: the pointcloud of the object center as zero coordinate  and masking background out
-```
+dpt_map_m=dpt_m : [480,640] depth map (already divided by scale of 1000, i.e. in mm)
 
 ```
-xyz_lst is a list of pointclouds in the scene. Each higher index is the down-sampled version of original
+
+xyz_lst is a list of pointclouds in the scene. Each higher index is the down-sampled version of original <br/>
+Note xyz_lst[0] is not sampled point cloud
+
+```
 xyz_lst[0]-> [3,480,640]
 xyz_lst[1]-> [3,240,320]
 xyz_lst[2]-> [3,120,160]
@@ -223,5 +220,65 @@ sr2dptxyz[1] : linear array of size [480*460 , 3]
 sr2dptxyz[2] : linear array of size [240*320 , 3]
 sr2dptxyz[4] : linear array of size [120*160 , 3]
 sr2dptxyz[8] : linear array of size [60*80 , 3]
+```
+
+···
+cld ：[n_sample_points,3] Chosen number of sample points (n_sample_points) from the actual point cloud of the scene
+       Note also that the consecutive position in the linear array does not mean they are closest point. It has been randomised by the index choose
+rgb_pt: [n_sample_points,3] The corresponding rgb values in cld
+nrm_pt: [n_sample_points,3] The corresponding depth normals in cld
+labels=labels_pt:  [n_sample_points] The mask of the object
+choose: [n_sample_points] Index of chosen points
+cld_rgb_nrm : [9, n_sample_points] concatenate cld,rgb,nrm at each point 
+···
 
 ```
+RTs : only [0], pose (R*T) of object e.g. 'APE' 
+kp_3ds=kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
+ctr_3ds=ctr3ds : the pose of the centre of the 3d object mulitplied by RT i.e. the 3d location (XYZ) of the centre of the object at the scene
+cls_ids : class id
+kp_targ_ofst: the 8 pointcloud (from cld) of the object centered at each keypoint (each keypoint is zero coordinate). 
+              #Computed by minusing pointcloud of scene with each kp3ds and masking background out
+ctr_targ_ofst: the pointcloud (from cld) of the object center as zero coordinate  and masking background out
+```
+```
+cld_xyzi (i=0 to 3):
+cld_xyz0 is original cld.
+cld_xyz1 is sub sampled by 4 from cld_xyz0
+cld_xyz2 is sub sampled by 4 from cld_xyz1
+cld_xyz3 is sub sampled by 4 from cld_xyz2
+
+cld_sub_idx0 to 3:
+contain index of sub sampled by 4 points from cld_xyz0 to 3.
+
+cld_nei_idx0 to 3:
+contain 15 indices of the neighbour of each point on cld_xyz0 to 3 ( think first element is not use ). neighbours are from cld_xyz
+
+cld_interp_idx0 to 3:
+contain 15 indices of the neighbour of each point on cld_xyz0 to 3 ( think first element is not use ). neighbours are from cld_sub_idx0
+
+sub_pts is sub sampled by 4 from cld_xyzi (i=0 to 3)
+
+r2p_ds_nei_idx0: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz0//4). neighbours are from sr2dptxyz[4]
+r2p_ds_nei_idx1: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz1//4). neighbours are from sr2dptxyz[8]
+r2p_ds_n1i_idx2: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz2//4)). neighbours are from sr2dptxyz[8]
+r2p_ds_n2i_idx3: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz3//4)). neighbours are from sr2dptxyz[8]
+```
+Top to bottom (4 layers):
+```
+p2r_ds_nei_idx0: contain index of 1 nearest neighbour of each point on sr2dptxyz[4]. neighbours are from sub_pts (cld_xyz0//4)
+p2r_ds_nei_idx1: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz1//4)
+p2r_ds_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz2//4)
+p2r_ds_nei_idx3: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz3//4)
+
+index of ```  
+index of Bottoindex of m to Top (3 layers):
+```
+r2p_up_nei_idx0: contain 16 indices of the neighbour of each point on cld_xyz3. neighbours are from sr2dptxyz[4]
+r2p_up_nei_idx1: contain 16 indices of the neighbour of each point on cld_xyz2. neighbours are from sr2dptxyz[2]
+r2p_up_nei_idx2: contain 16 indices of the neighbour of each point on cld_xyz1. neighbours are from sr2dptxyz[2]
+
+p2r_up_nei_idx0: contain index of 1 nearest neighbour of each point on sr2dptxyz[4]. neighbours are from cld_xyz3
+p2r_up_nei_idx1: contain index of 1 nearest neighbour of each point on sr2dptxyz[2]. neighbours are from cld_xyz2
+p2r_up_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz[2]. neighbours are from cld_xyz1
+``` 
