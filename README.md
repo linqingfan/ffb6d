@@ -210,3 +210,17 @@ kp_targ_ofst: the 8 pointcloud of the object centered at each keypoint (each key
               #Computed by minusing pointcloud of scene with each kp3ds and masking background out
 ctr_targ_ofst: the pointcloud of the object center as zero coordinate  and masking background out
 ```
+
+```
+xyz_lst: [0]-> [3,480,640]
+[1]-> [3,240,320]
+[2]-> [3,120,160]
+[3]-> [3,60,80]
+
+sr2dptxyz is a tuple and is linearised version of xyz_lst:
+sr2dptxyz[1] : linear array of size [480*460 , 3]
+sr2dptxyz[2] : linear array of size [240*320 , 3]
+sr2dptxyz[4] : linear array of size [120*160 , 3]
+sr2dptxyz[8] : linear array of size [60*80 , 3]
+
+```
