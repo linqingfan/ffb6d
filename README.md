@@ -222,7 +222,7 @@ sr2dptxyz[4] : linear array of size [120*160 , 3]
 sr2dptxyz[8] : linear array of size [60*80 , 3]
 ```
 
-···
+```
 cld ：[n_sample_points,3] Chosen number of sample points (n_sample_points) from the actual point cloud of the scene
        Note also that the consecutive position in the linear array does not mean they are closest point. It has been randomised by the index choose
 rgb_pt: [n_sample_points,3] The corresponding rgb values in cld
@@ -230,8 +230,6 @@ nrm_pt: [n_sample_points,3] The corresponding depth normals in cld
 labels=labels_pt:  [n_sample_points] The mask of the object
 choose: [n_sample_points] Index of chosen points
 cld_rgb_nrm : [9, n_sample_points] concatenate cld,rgb,nrm at each point 
-···
-
 ```
 RTs : only [0], pose (R*T) of object e.g. 'APE' 
 kp_3ds=kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
