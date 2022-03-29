@@ -241,34 +241,71 @@ kp_targ_ofst: the 8 pointcloud (from cld) of the object centered at each keypoin
 ctr_targ_ofst: the pointcloud (from cld) of the object center as zero coordinate  and masking background out
 ```
 ```
-cld_xyzi (i=0 to 3):
-cld_xyz0 is original cld.
-cld_xyz1 is sub sampled by 4 from cld_xyz0
-cld_xyz2 is sub sampled by 4 from cld_xyz1
-cld_xyz3 is sub sampled by 4 from cld_xyz2
-
-cld_sub_idx0 to 3:
-contain index of sub sampled by 4 points from cld_xyz0 to 3.
-
-cld_nei_idx0 to 3:
-contain 15 indices of the neighbour of each point on cld_xyz0 to 3 ( think first element is not use ). neighbours are from cld_xyz
-
-cld_interp_idx0 to 3:
-contain 15 indices of the neighbour of each point on cld_xyz0 to 3 ( think first element is not use ). neighbours are from cld_sub_idx0
-
-sub_pts is sub sampled by 4 from cld_xyzi (i=0 to 3)
-
-r2p_ds_nei_idx0: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz0//4). neighbours are from sr2dptxyz[4]
-r2p_ds_nei_idx1: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz1//4). neighbours are from sr2dptxyz[8]
-r2p_ds_n1i_idx2: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz2//4)). neighbours are from sr2dptxyz[8]
-r2p_ds_n2i_idx3: contain 16 indices of the neighbour of each point on sub_pts (cld_xyz3//4)). neighbours are from sr2dptxyz[8]
+    def knn_search(support_pts, query_pts, k):
+        """
+        :param support_pts: points you have, B*N1*3
+        :param query_pts: points you want to know the neighbour index, B*N2*3
+        :param k: Number of neighbours in knn search
+        :return: neighbor_idx: neighboring points indexes, B*N2*k
+        """
 ```
+
+
+```
+cld_xyz_ (_ = 0 to 3):
+cld_xyz0 is original cld. [bs, 12800, 3]
+cld_xyz1 is sub sampling cld_xyz0 by 4. [bs, 3200, 3]
+cld_xyz2 is sub sampling cld_xyz1 by 4 [bs, 800, 3]
+cld_xyz3 is is sub sampling cld_xyz2 by 4 [bs, 200, 3]
+
+cld_nei_idx_ 
+contain 16 indices of the neighbour of each point on cld_xyz_. neighbours are the points in cld_xyz_
+cld_nei_idx0 : [bs, 12800, 16]
+cld_nei_idx1 : [bs, 3200, 16]
+cld_nei_idx2 : [bs, 800, 16]
+cld_nei_idx3 : [bs, 200, 16]
+
+For explanation purpose, let sub_pts_ be
+sub_pts0 [bs, 3200, 3] be the point cloud of subsampled of cld_xyz0 by 4
+sub_pts1 [bs, 800, 3] be the point cloud of subsampled of cld_xyz1 by 4
+sub_pts2 [bs, 200, 3] be the point cloud of subsampled of cld_xyz2 by 4
+sub_pts3 [bs, 50, 3] be the point cloud of subsampled of cld_xyz3 by 4
+
+cld_sub_idx_:
+contain indices of 16 neighbours of sub_pts_
+cld_sub_idx0: [bs, 3200, 16], the indices of 16 nearest neightbours of sub_pts0
+cld_sub_idx1: [bs, 800, 16], the indices of 16 nearest neightbours of sub_pts1
+cld_sub_idx2: [bs, 200, 16], the indices of 16 nearest neightbours of sub_pts2
+cld_sub_idx3: [bs, 50, 16], the indices of 16 nearest neightbours of sub_pts3
+
+
+cld_interp_idx_:
+contain index of the nearest neighbour of each point on cld_xyz_. The nearest neighbour is from sub_pts_
+cld_interp_idx0: [bs, 12800, 1] contain index of the nearest neighbour of each point on cld_xyz0. Nearest neighbour is from sub_pts0 [bs, 3200, 3]
+cld_interp_idx1: [bs, 3200, 1] contain index of the nearest neighbour of each point on cld_xyz1. Nearest neighbour is from sub_pts1 [bs, 800, 3]
+cld_interp_idx2: [bs, 800, 1] contain index of the nearest neighbour of each point on cld_xyz2. Nearest neighbour is from sub_pts2 [bs, 200, 3]
+cld_interp_idx3: [bs, 200, 1] contain index of the nearest neighbour of each point on cld_xyz3. Nearest neighbour is from sub_pts3 [bs, 50, 3]
+```
+```
+sr2dptxyz is the original cloud with sub sampling of 4 at each bttom layer
+sr2dptxyz[1]: (307200, 3) The original non-sampled point cloud. Note: 480*640/1=307200
+sr2dptxyz[2]: (76800 , 3) The original non-sampled point cloud sub sampled by 4. Note: 480*640/4=76800
+sr2dptxyz[4]: (19200 , 3) The original non-sampled point cloud sub sampled by 16. Note: 480*640/16=19200
+sr2dptxyz[8]: (4800 , 3) The original non-sampled point cloud sub sampled by 64. Note: 480*640/64=4800
+
+
+r2p_ds_nei_idx0: [bs, 3200, 16] contain 16 indices of the neighbour of each point on sub_pts0. neighbours are from sr2dptxyz[4] (19200 , 3) 
+r2p_ds_nei_idx1: [bs, 800, 16] contain 16 indices of the neighbour of each point on sub_pts1. neighbours are from sr2dptxyz[8] (4800 , 3)
+r2p_ds_n1i_idx2: [bs, 200, 16] contain 16 indices of the neighbour of each point on sub_pts2. neighbours are from sr2dptxyz[8] (4800 , 3)
+r2p_ds_n2i_idx3: [bs, 50, 16] contain 16 indices of the neighbour of each point on sub_pts3. neighbours are from sr2dptxyz[8] (4800 , 3)
+```
+
 Top to bottom (4 layers):
 ```
-p2r_ds_nei_idx0: contain index of 1 nearest neighbour of each point on sr2dptxyz[4]. neighbours are from sub_pts (cld_xyz0//4)
-p2r_ds_nei_idx1: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz1//4)
-p2r_ds_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz2//4)
-p2r_ds_nei_idx3: contain index of 1 nearest neighbour of each point on sr2dptxyz[8]. neighbours are from sub_pts (cld_xyz3//4)
+p2r_ds_nei_idx0: [bs, 19200, 1] contain index of nearest neighbour at each point on sr2dptxyz['4']. neighbours are from sub_pts0 [bs, 3200, 3]
+p2r_ds_nei_idx1: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts1 [bs, 800, 3]
+p2r_ds_nei_idx2: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts2 [bs, 200, 3]
+p2r_ds_nei_idx3: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts3 [bs, 50, 3]
 ```
 
 Bottom to Top (3 layers):
