@@ -210,6 +210,8 @@ xyz_lst is a list of pointclouds in the scene. Each higher index is the down-sam
 Note xyz_lst[0] is not sampled point cloud
 
 ```
+xyz_lst is a 2D RGB locations containing XYZ coordinates at each rgb location
+
 xyz_lst[0]-> [3,480,640]
 xyz_lst[1]-> [3,240,320]
 xyz_lst[2]-> [3,120,160]
@@ -287,11 +289,11 @@ cld_interp_idx2: [bs, 800, 1] contain index of the nearest neighbour of each poi
 cld_interp_idx3: [bs, 200, 1] contain index of the nearest neighbour of each point on cld_xyz3. Nearest neighbour is from sub_pts3 [bs, 50, 3]
 ```
 ```
-sr2dptxyz is the original cloud with sub sampling of 4 at each bttom layer
-sr2dptxyz[1]: (307200, 3) The original non-sampled point cloud. Note: 480*640/1=307200
-sr2dptxyz[2]: (76800 , 3) The original non-sampled point cloud sub sampled by 4. Note: 480*640/4=76800
-sr2dptxyz[4]: (19200 , 3) The original non-sampled point cloud sub sampled by 16. Note: 480*640/16=19200
-sr2dptxyz[8]: (4800 , 3) The original non-sampled point cloud sub sampled by 64. Note: 480*640/64=4800
+sr2dptxyz is the original 2D rgb locations linearised that contain XYZ coordinate for each rgb value
+sr2dptxyz[1]: (307200, 3) The original 2D linearised rgb locations with XYZ coordinate. Note: 480*640/1=307200
+sr2dptxyz[2]: (76800 , 3) The original 2D linearised rgb locations with XYZ coordinate sub sampled by 4. Note: 480*640/4=76800
+sr2dptxyz[4]: (19200 , 3) The original 2D linearised rgb locations with XYZ coordinate sub sampled by 16. Note: 480*640/16=19200
+sr2dptxyz[8]: (4800 , 3) The original 2D linearised rgb locations with XYZ coordinate sub sampled by 64. Note: 480*640/64=4800
 
 
 r2p_ds_nei_idx0: [bs, 3200, 16] contain 16 indices of the neighbour of each point on sub_pts0. neighbours are from sr2dptxyz[4] (19200 , 3) 
@@ -302,10 +304,10 @@ r2p_ds_n2i_idx3: [bs, 50, 16] contain 16 indices of the neighbour of each point 
 
 Top to bottom (4 layers):
 ```
-p2r_ds_nei_idx0: [bs, 19200, 1] contain index of nearest neighbour at each point on sr2dptxyz['4']. neighbours are from sub_pts0 [bs, 3200, 3]
-p2r_ds_nei_idx1: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts1 [bs, 800, 3]
-p2r_ds_nei_idx2: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts2 [bs, 200, 3]
-p2r_ds_nei_idx3: [bs, 4800, 1] contain index of nearest neighbour at each point on sr2dptxyz['8']. neighbours are from sub_pts3 [bs, 50, 3]
+p2r_ds_nei_idx0: [bs, 19200, 1] Each rgb location of sr2dptxyz['4'] store the index of the nearest point in the pt cloud sub_pts0 [bs, 3200, 3]
+p2r_ds_nei_idx1: [bs, 4800, 1] Each rgb location of sr2dptxyz['8'] store the index of the nearest point in the pt cloud sub_pts0 [bs, 800, 3]
+p2r_ds_nei_idx2: [bs, 4800, 1] Each rgb location of sr2dptxyz['8'] store the index of the nearest point in the pt cloud sub_pts0 [bs, 200, 3]
+p2r_ds_nei_idx3: [bs, 4800, 1] Each rgb location of sr2dptxyz['8'] store the index of the nearest point in the pt cloud sub_pts0 [bs, 50, 3]
 ```
 
 Bottom to Top (3 layers):
@@ -318,3 +320,14 @@ p2r_up_nei_idx0: contain index of 1 nearest neighbour of each point on sr2dptxyz
 p2r_up_nei_idx1: contain index of 1 nearest neighbour of each point on sr2dptxyz[2]. neighbours are from cld_xyz2
 p2r_up_nei_idx2: contain index of 1 nearest neighbour of each point on sr2dptxyz[2]. neighbours are from cld_xyz1
 ``` 
+```
+relative_pos_encoding
+[relative_dis, relative_xyz, xyz_tile, neighbor_xyz]
+return [bs, 12800, 16, 10]
+
+xyz_tile: [bs, 12800, 16, 3], cordinate of each pt in the point cloud repeated 16 times
+neighbor_xyz: [bs, 12800, 16, 3], the 16 cordinate of the neigbout of each pt in the point cloud. each coordinate is (x,y,z)
+relative_xyz:  [bs, 12800, 16, 3], xyz_tile-neighbor_xyz which is the vector from each neighbour to the point in the pointcloud
+relative_dis: [bs, 12800, 16, 1], the length of each vector in relative_xyz
+
+```
