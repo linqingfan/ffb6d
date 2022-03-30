@@ -238,9 +238,9 @@ RTs : only [0], pose (R*T) of object e.g. 'APE'
 kp_3ds=kp3ds : 8 selected keypts in APE multiplied by RT i.e. the 3d keypoints locations (XYZ) at the scene
 ctr_3ds=ctr3ds : the pose of the centre of the 3d object mulitplied by RT i.e. the 3d location (XYZ) of the centre of the object at the scene
 cls_ids : class id
-kp_targ_ofst: the 8 pointcloud (from cld) of the object centered at each keypoint (each keypoint is zero coordinate). 
-              #Computed by minusing pointcloud of scene with each kp3ds and masking background out
-ctr_targ_ofst: the pointcloud (from cld) of the object center as zero coordinate  and masking background out
+kp_targ_ofst: object ptcld centered at each keypoint (each keypoint is zero coordinate). 
+              #Computed by minusing obj ptcld with each kp3ds
+ctr_targ_ofst: the pointcloud (from cld) of the object center as zero coordinate  and masking background out (left only object ptcld)
 ```
 ```
     def knn_search(support_pts, query_pts, k):
